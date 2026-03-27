@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yêu Học Đè Tem – Khóa Học Cho Những Khát Vọng Lớn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Mulish:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold: #F0A500;
+      --gold-light: #FFD166;
+      --navy: #0D1B2A;
+      --navy-mid: #132336;
+      --cream: #FFF8EE;
+      --soft-white: #F5EDD9;
+      --accent-rose: #E8735A;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--navy);
+      font-family: 'Mulish', sans-serif;
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* ─── CANVAS STARS ─── */
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    /* Radial glow backdrop */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 60%, rgba(240,165,0,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 60% at 20% 80%, rgba(232,115,90,0.08) 0%, transparent 60%),
+        linear-gradient(170deg, #0D1B2A 0%, #0a1520 100%);
+      z-index: -1;
+    }
+
+    /* Diagonal light streak */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -10%;
+      right: -5%;
+      width: 55%;
+      height: 130%;
+      background: linear-gradient(135deg,
+        transparent 40%,
+        rgba(240,165,0,0.04) 50%,
+        rgba(240,165,0,0.07) 55%,
+        transparent 65%);
+      transform: rotate(-8deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── DECORATIVE CIRCLES ─── */
+    .deco-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(240,165,0,0.12);
+      pointer-events: none;
+      animation: ringPulse 6s ease-in-out infinite;
+    }
+    .deco-ring:nth-child(1) { width: 520px; height: 520px; top: -80px; right: -120px; animation-delay: 0s; }
+    .deco-ring:nth-child(2) { width: 340px; height: 340px; top: -30px; right: -60px; border-color: rgba(240,165,0,0.08); animation-delay: 1.5s; }
+    .deco-ring:nth-child(3) { width: 200px; height: 200px; bottom: 60px; left: -60px; border-color: rgba(232,115,90,0.1); animation-delay: 3s; }
+
+    @keyframes ringPulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50%       { opacity: 1;   transform: scale(1.04); }
+    }
+
+    /* ─── FLOATING PARTICLES ─── */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) scale(1);   opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-110vh) scale(0.4); opacity: 0; }
+    }
+
+    /* ─── CONTENT ─── */
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    /* Tag line */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(240,165,0,0.1);
+      border: 1px solid rgba(240,165,0,0.3);
+      border-radius: 100px;
+      padding: 6px 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s ease forwards;
+    }
+    .tag::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+      animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* Main heading */
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6.2rem);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s ease forwards;
+    }
+    h1 .line1 { display: block; color: var(--cream); }
+    h1 .line2 {
+      display: block;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, var(--accent-rose) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-style: italic;
+    }
+
+    /* Subtitle */
+    .subtitle {
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(245,237,217,0.75);
+      max-width: 640px;
+      margin: 28px auto 44px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.65s ease forwards;
+    }
+    .subtitle strong {
+      color: var(--cream);
+      font-weight: 600;
+    }
+
+    /* CTA row */
+    .cta-row {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.85s ease forwards;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold) 0%, var(--accent-rose) 100%);
+      color: var(--navy);
+      font-family: 'Mulish', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      padding: 16px 40px;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(240,165,0,0.35);
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.15);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(240,165,0,0.5); }
+    .btn-primary:hover::after { opacity: 1; }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--soft-white);
+      font-family: 'Mulish', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 15px 36px;
+      border: 1px solid rgba(245,237,217,0.25);
+      border-radius: 100px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--gold-light);
+      background: rgba(240,165,0,0.06);
+      transform: translateY(-3px);
+    }
+
+    /* ─── CAROUSEL SECTION ─── */
+    .members-section {
+      position: relative;
+      z-index: 2;
+      padding: 80px 0 100px;
+      background: linear-gradient(180deg, transparent 0%, rgba(10,21,32,0.95) 20%, #080f18 60%, #080f18 100%);
+    }
+    .members-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(240,165,0,0.3), transparent);
+    }
+    .section-label {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .section-label h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 10px;
+    }
+    .section-label h2 span {
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-label p {
+      font-size: 0.95rem;
+      color: rgba(245,237,217,0.45);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+    }
+
+    /* Track */
+    .carousel-wrap {
+      position: relative;
+      overflow: hidden;
+      padding: 20px 0 32px;
+    }
+    .carousel-track {
+      display: flex;
+      gap: 28px;
+      padding: 0 calc(50vw - 600px);
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    /* Card */
+    .member-card {
+      flex: 0 0 480px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      border: 1px solid rgba(240,165,0,0.12);
+      border-radius: 20px;
+      padding: 28px 28px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 24px;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+      cursor: default;
+    }
+    .member-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(240,165,0,0.06), transparent 70%);
+      pointer-events: none;
+    }
+    .member-card.active {
+      border-color: rgba(240,165,0,0.4);
+      box-shadow: 0 0 40px rgba(240,165,0,0.12), 0 20px 60px rgba(0,0,0,0.4);
+      transform: translateY(-6px) scale(1.02);
+    }
+    .member-avatar {
+      flex-shrink: 0;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      border: 2px solid rgba(240,165,0,0.35);
+      background: var(--navy-mid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      position: relative;
+      overflow: hidden;
+    }
+    .member-avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .member-badge {
+      position: absolute;
+      bottom: -2px; right: -2px;
+      width: 26px; height: 26px;
+      background: linear-gradient(135deg, var(--gold), var(--accent-rose));
+      border-radius: 50%;
+      border: 2px solid #080f18;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem;
+    }
+    .member-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .member-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+    .member-role {
+      font-size: 0.72rem;
+      color: var(--gold-light);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .member-quote {
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: rgba(245,237,217,0.65);
+      font-style: italic;
+      font-weight: 300;
+    }
+    .member-quote::before { content: '"'; color: var(--gold); font-size: 1.1rem; }
+    .member-quote::after  { content: '"'; color: var(--gold); font-size: 1.1rem; }
+
+    /* Progress bar */
+    .carousel-progress {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 32px;
+    }
+    .progress-dot {
+      width: 6px; height: 6px;
+      border-radius: 3px;
+      background: rgba(240,165,0,0.2);
+      transition: width 0.4s ease, background 0.4s ease;
+      cursor: pointer;
+    }
+    .progress-dot.active {
+      width: 28px;
+      background: var(--gold);
+    }
+
+    /* Nav button */
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: clamp(16px, 4vw, 60px);
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      border: 1px solid rgba(240,165,0,0.35);
+      background: rgba(13,27,42,0.85);
+      backdrop-filter: blur(8px);
+      color: var(--gold-light);
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      z-index: 10;
+    }
+    .carousel-nav:hover {
+      background: rgba(240,165,0,0.15);
+      border-color: var(--gold);
+      transform: translateY(-50%) scale(1.08);
+    }
+
+    /* ─── SCROLL INDICATOR ─── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeIn 1s 1.6s ease forwards;
+    }
+    .scroll-hint span {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(245,237,217,0.35);
+    }
+    .scroll-mouse {
+      width: 22px; height: 36px;
+      border: 1.5px solid rgba(245,237,217,0.25);
+      border-radius: 12px;
+      position: relative;
+    }
+    .scroll-mouse::after {
+      content: '';
+      width: 3px; height: 8px;
+      background: var(--gold-light);
+      border-radius: 2px;
+      position: absolute;
+      left: 50%; top: 6px;
+      transform: translateX(-50%);
+      animation: scrollDot 2s infinite;
+    }
+    @keyframes scrollDot {
+      0%   { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(14px); }
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(26px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ─── VINH DANH TABLE ─── */
+    .vinh-danh-section {
+      position: relative;
+      z-index: 2;
+      padding: 80px 24px 100px;
+      background: linear-gradient(180deg, #080f18 0%, #0a1520 100%);
+    }
+    .vinh-danh-section::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(240,165,0,0.3), transparent);
+    }
+    .vinh-danh-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .vinh-danh-table-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(240,165,0,0.15);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .vinh-danh-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .vinh-danh-table thead tr {
+      background: linear-gradient(135deg, rgba(240,165,0,0.22), rgba(232,115,90,0.18));
+    }
+    .vinh-danh-table th {
+      padding: 14px 16px;
+      text-align: center;
+      font-family: 'Mulish', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      border-bottom: 1px solid rgba(240,165,0,0.2);
+    }
+    .vinh-danh-table th:nth-child(2) { text-align: left; }
+    .vinh-danh-table td {
+      padding: 13px 16px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(245,237,217,0.75);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .vinh-danh-table td:nth-child(2) {
+      text-align: left;
+      font-weight: 600;
+      color: var(--cream);
+    }
+    .vinh-danh-table tbody tr {
+      background: rgba(255,255,255,0.015);
+      transition: background 0.2s;
+    }
+    .vinh-danh-table tbody tr:nth-child(even) {
+      background: rgba(255,255,255,0.03);
+    }
+    .vinh-danh-table tbody tr:hover {
+      background: rgba(240,165,0,0.06);
+    }
+    .vinh-danh-table tbody tr:last-child td { border-bottom: none; }
+    .vinh-danh-table .row-top {
+      background: linear-gradient(90deg, rgba(240,165,0,0.13), rgba(240,165,0,0.04)) !important;
+    }
+    .vinh-danh-table .row-top td:nth-child(2) { color: var(--gold-light); }
+    .score-badge {
+      display: inline-block;
+      background: rgba(240,165,0,0.13);
+      border: 1px solid rgba(240,165,0,0.28);
+      border-radius: 6px;
+      padding: 2px 9px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+    .score-ielts {
+      background: rgba(232,115,90,0.12);
+      border-color: rgba(232,115,90,0.3);
+      color: #f0a585;
+    }
+    .score-sat {
+      background: rgba(100,180,255,0.1);
+      border-color: rgba(100,180,255,0.28);
+      color: #a8d4ff;
+    }
+    .score-hsk {
+      background: rgba(100, 255, 100, 0.1);
+    border-color: rgba(100, 255, 100, 0.28);
+    color: #a8ffad;
+    }
+    .empty-cell { color: rgba(245,237,217,0.18); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 600px) {
+      .hero-inner { padding: 40px 24px; }
+      .carousel-track { padding: 0 24px; }
+      .member-card {
+        flex: 0 0 320px;
+        flex-direction: column;
+        text-align: center;
+      }
+      .member-avatar { margin: 0 auto; }
+      .member-info { text-align: center; }
+      .vinh-danh-table th,
+      .vinh-danh-table td { padding: 10px 10px; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<section class="hero">
+  <!-- Decorative rings -->
+  <div class="deco-ring"></div>
+  <div class="deco-ring"></div>
+  <div class="deco-ring"></div>
+
+  <!-- Floating particles (JS-generated) -->
+
+  <div class="hero-inner">
+    <div class="tag">Dự án giáo dục cộng đồng</div>
+
+    <h1>
+      <span class="line1">Yêu Học</span>
+      <span class="line2">Để Trẻm</span>
+    </h1>
+
+    <p class="subtitle">
+      Khóa học được xây dựng dành riêng cho những học sinh có hoàn cảnh khó khăn nhưng luôn
+      <strong>nuôi dưỡng khát vọng vươn lên</strong>. Không chỉ cung cấp kiến thức trọng tâm —
+      chúng tôi đồng hành, định hướng và truyền động lực, giúp bạn phát triển
+      <strong>tư duy, sự tự tin và bản lĩnh</strong> để chinh phục các kỳ thi quan trọng.
+    </p>
+
+    <div class="cta-row">
+      <button class="btn-primary">Đăng ký ngay hôm nay</button>
+      <button class="btn-ghost">Tìm hiểu thêm →</button>
+    </div>
+
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-mouse"></div>
+    <span>Cuộn xuống</span>
+  </div>
+</section>
+
+<!-- ─── MEMBERS CAROUSEL ─── -->
+<section class="members-section">
+  <div class="section-label">
+    <h2>Thành Viên <span>Tiêu Biểu</span></h2>
+    <p>Những học viên đã và đang viết nên câu chuyện của mình</p>
+  </div>
+
+  <div class="carousel-wrap">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="member-card">
+        <div class="member-avatar">
+           <img src="https://i.imgur.com/sayRUfV.png">
+          <div class="member-badge">✨</div>
+        </div>
+        <div class="member-info">
+          <div class="member-name">Phạm Duy Minh</div>
+          <div class="member-role">Bố của yeuhoc</div>
+          <p class="member-quote">Xuất phát từ hoàn cảnh khó khăn, nhưng khóa học đã giúp mình không bỏ cuộc.</p>
+        </div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-avatar">
+          <img src="https://i.imgur.com/jSmRzSD.jpeg">
+          <div class="member-badge">⭐</div>
+        </div>
+        <div class="member-info">
+          <div class="member-name">Nguyễn Nhật Duy</div>
+          <div class="member-role">Bố của duy minh</div>
+          <p class="member-quote">HSG Toán TP Hà Nội,113 HSA,74 TSA</p>
+        </div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-avatar">
+          <img src="https://i.imgur.com/ZB3kQn8.png">
+          <div class="member-badge">🏆</div>
+        </div>
+        <div class="member-info">
+          <div class="member-name">Trần Hải Minh</div>
+          <div class="member-role">Khổng Minh Minh</div>
+          <p class="member-quote"></p>
+        </div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-avatar">
+          <img src="https://i.imgur.com/K4O2dTs.png">
+          <div class="member-badge">✨</div>
+        </div>
+        <div class="member-info">
+          <div class="member-name">Đặng Hiếu Nguyên</div>
+          <div class="member-role">Bố của Nhật Duy</div>
+          <p class="member-quote">Xuất phát từ hoàn cảnh khó khăn, nhưng khóa học đã giúp mình không bỏ cuộc.</p>
+        </div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-avatar">
+          <img src="https://i.imgur.com/l9EsO1s.jpeg">
+          <div class="member-badge">✨</div>
+        </div>
+        <div class="member-info">
+          <div class="member-name">Nguyễn Quang Anh</div>
+          <div class="member-role">Bố của Hiếu Nguyên</div>
+          <p class="member-quote">Xuất phát từ hoàn cảnh khó khăn, nhưng khóa học đã giúp mình không bỏ cuộc.</p>
+        </div>
+      </div>
+
+
+      
+
+      
+
+    
+
+    </div>
+
+    <!-- Right nav button -->
+    <button class="carousel-nav" id="carouselNext" aria-label="Tiếp theo">›</button>
+  </div>
+
+  <div class="carousel-progress" id="carouselDots"></div>
+</section>
+
+<!-- ─── BẢNG VINH DANH ─── -->
+<section class="vinh-danh-section">
+  <div class="vinh-danh-inner">
+    <div class="section-label">
+      <h2>🏆 Bảng <span>Vinh Danh</span></h2>
+      <p>Những học viên đã ghi dấu ấn tại yeuhocdetem.com</p>
+    </div>
+
+    <div class="vinh-danh-table-wrap">
+      <table class="vinh-danh-table">
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Họ và tên</th>
+            <th>HSA</th>
+            <th>TSA</th>
+            <th>SAT</th>
+            <th>IELTS</th>
+            <th>HSK</th>
+          </tr>
+        </thead>
+        <tbody>
+                    <tr class="row-top">
+            <td>0</td>
+            <td>Đặng Hiếu Nguyên</td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-ielts">8.5</span></td>
+            <td><span class="score-badge score-hsk">9</span></td>
+          </tr>
+
+          <tr class="row-top">
+            <td>1</td>
+            <td>Nguyễn Nhật Duy</td>
+            <td><span class="score-badge">113</span></td>
+            <td><span class="score-badge">74.xx</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr class="row-top">
+            <td>2</td>
+            <td>Phạm Duy Minh</td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-sat">1590</span></td>
+            <td><span class="score-badge score-ielts">7.5</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Nguyễn Hưng Thịnh</td>
+            <td><span class="score-badge">106</span></td>
+            <td><span class="score-badge">66.xx</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-ielts">7.0</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Trần Hải Minh</td>
+            <td><span class="score-badge">105</span></td>
+            <td><span class="score-badge">62.xx</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-ielts">7.0</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Nguyễn Quang Anh</td>
+            <td><span class="score-badge">95</span></td>
+            <td><span class="score-badge">61.xx</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Quách Thanh Hải</td>
+            <td><span class="score-badge">99</span></td>
+            <td><span class="score-badge">58.xx</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-ielts">7.0</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Phan Ngọc Khánh</td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge">57.xx</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Trần Hoàng Dương</td>
+            <td><span class="score-badge">83</span></td>
+            <td><span class="score-badge">57.xx</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-ielts">7.0</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Đỗ Minh Hưng</td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-sat">1540</span></td>
+            <td><span class="score-badge score-ielts">7.5</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>Trần Hoàng Hải Nam</td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-ielts">7.5</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>Nguyễn Hoàng Quân</td>
+            <td><span class="empty-cell">89</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-ielts">7.5</span></td>
+            <td><span class="empty-cell">—</span></td>
+          <tr>
+            <td>12</td>
+            <td>Trương Đức Phan Anh</td>
+            <td><span class="score-badge">95</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-ielts">6.5</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td>Nguyễn Đức Huy</td>
+            <td><span class="score-badge">95</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td>Nguyễn Ngọc Thạch</td>
+            <td><span class="score-badge">94</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-ielts">5.5</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Hoàng Văn Phú</td>
+            <td><span class="score-badge">85</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr>
+            <td>16</td>
+            <td>Nguyễn Trọng Đức</td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-ielts">6.0</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* ── Starfield canvas ── */
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function initStars(n = 160) {
+    stars = [];
+    for (let i = 0; i < n; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2 + 0.2,
+        a: Math.random(),
+        da: (Math.random() * 0.004 + 0.001) * (Math.random() < 0.5 ? 1 : -1),
+      });
+    }
+  }
+  initStars();
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+      s.a += s.da;
+      if (s.a <= 0 || s.a >= 1) s.da *= -1;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 220, 140, ${s.a * 0.7})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  /* ── Floating particles ── */
+  const hero = document.querySelector('.hero');
+  const colors = ['rgba(240,165,0,', 'rgba(255,209,102,', 'rgba(232,115,90,'];
+
+  function spawnParticle() {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 5 + 2;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const left = Math.random() * 100;
+    const duration = Math.random() * 14 + 10;
+    const delay = Math.random() * 6;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${left}%; bottom:-10px;
+      background:${color}${Math.random() * 0.5 + 0.2});
+      box-shadow:0 0 ${size * 2}px ${color}0.4);
+      animation-duration:${duration}s;
+      animation-delay:-${delay}s;
+    `;
+    hero.appendChild(p);
+    setTimeout(() => p.remove(), (duration + delay) * 1000);
+  }
+
+  for (let i = 0; i < 18; i++) spawnParticle();
+  setInterval(spawnParticle, 1200);
+
+  /* ── Carousel ── */
+  const track    = document.getElementById('carouselTrack');
+  const nextBtn  = document.getElementById('carouselNext');
+  const dotsWrap = document.getElementById('carouselDots');
+  const cards    = Array.from(track.querySelectorAll('.member-card'));
+  const TOTAL    = cards.length;
+  let current    = 0;
+  let autoTimer;
+
+  // Build dots
+  cards.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  });
+
+  function getCardWidth() {
+    const card = cards[0];
+    const gap = 28;
+    return card.getBoundingClientRect().width + gap;
+  }
+
+  function getOffset(index) {
+    // Center the active card
+    const cardW  = getCardWidth();
+    const center = window.innerWidth / 2;
+    const cardCenter = cards[index].getBoundingClientRect().width / 2;
+    let offset = 0;
+    for (let i = 0; i < index; i++) offset += getCardWidth();
+    return -(offset - center + cardCenter + cards[index].getBoundingClientRect().width / 2 - 14);
+  }
+
+  function goTo(index) {
+    current = (index + TOTAL) % TOTAL;
+
+    // Recalculate pixel offset
+    const cardW = getCardWidth();
+    const viewCenter = window.innerWidth / 2;
+    const firstCardLeft = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+    // Simple centering: shift so card[current] is in center
+    const rawOffset = firstCardLeft + current * cardW - viewCenter + cards[0].getBoundingClientRect().width / 2;
+    track.style.transform = `translateX(${-rawOffset}px)`;
+
+    // Update active card
+    cards.forEach((c, i) => c.classList.toggle('active', i === current));
+
+    // Update dots
+    Array.from(dotsWrap.children).forEach((d, i) => d.classList.toggle('active', i === current));
+
+    resetTimer();
+  }
+
+  function goNext() { goTo(current + 1); }
+
+  function resetTimer() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(goNext, 5000);
+  }
+
+  nextBtn.addEventListener('click', goNext);
+
+  // Init
+  window.addEventListener('resize', () => goTo(current));
+  // Small delay to let layout settle
+  setTimeout(() => goTo(0), 100);
+
+</script>
+</body>
+</html>
