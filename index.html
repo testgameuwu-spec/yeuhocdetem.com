@@ -417,6 +417,10 @@
       border-color: var(--gold);
       transform: translateY(-50%) scale(1.08);
     }
+    .carousel-nav.prev {
+      right: auto;
+      left: clamp(16px, 4vw, 60px);
+    }
 
     /* ─── SCROLL INDICATOR ─── */
     .scroll-hint {
@@ -698,6 +702,9 @@
     
 
     </div>
+
+    <!-- Left nav button -->
+    <button class="carousel-nav prev" id="carouselPrev" aria-label="Trước">‹</button>
 
     <!-- Right nav button -->
     <button class="carousel-nav" id="carouselNext" aria-label="Tiếp theo">›</button>
@@ -1016,6 +1023,9 @@
   }
 
   nextBtn.addEventListener('click', goNext);
+
+  const prevBtn = document.getElementById('carouselPrev');
+  prevBtn.addEventListener('click', () => goTo(current - 1));
 
   // Init
   window.addEventListener('resize', () => goTo(current));
