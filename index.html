@@ -114,6 +114,83 @@
       text-align: center;
     }
 
+    /* ─── HERO GALLERY PANELS ─── */
+    .hero-gallery {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: clamp(260px, 26vw, 420px);
+      height: clamp(260px, 26vw, 420px);
+      border-radius: 16px;
+      border: 1px solid rgba(240,165,0,0.25);
+      overflow: hidden;
+      cursor: pointer;
+      z-index: 3;
+      background: rgba(13,27,42,0.6);
+      backdrop-filter: blur(4px);
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .hero-gallery:hover {
+      border-color: rgba(240,165,0,0.6);
+      box-shadow: 0 0 30px rgba(240,165,0,0.15);
+    }
+    .hero-gallery.left  { left:  clamp(12px, 3vw, 48px); }
+    .hero-gallery.right { right: clamp(12px, 3vw, 48px); }
+
+    /* Stack of image slides inside each panel */
+    .gallery-slide {
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+      width: 100%; height: 100%;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      opacity: 0;
+      transform: scale(1.04);
+    }
+    .gallery-slide.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Overlay gradient + arrow hint */
+    .hero-gallery::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(8,15,24,0.65) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .gallery-arrow {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      font-size: 1.4rem;
+      color: rgba(240,165,0,0.7);
+      pointer-events: none;
+      transition: color 0.3s;
+    }
+    .hero-gallery:hover .gallery-arrow { color: var(--gold); }
+
+    /* Slide-in animations */
+    @keyframes slideFromRight {
+      from { opacity: 0; transform: translateX(40px) scale(1.04); }
+      to   { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes slideFromLeft {
+      from { opacity: 0; transform: translateX(-40px) scale(1.04); }
+      to   { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    .gallery-slide.anim-from-right { animation: slideFromRight 0.55s ease forwards; }
+    .gallery-slide.anim-from-left  { animation: slideFromLeft  0.55s ease forwards; }
+
+    /* Hide on very small screens */
+    @media (max-width: 768px) {
+      .hero-gallery { display: none; }
+    }
+
     /* Tag line */
     .tag {
       display: inline-flex;
@@ -597,6 +674,14 @@
 
   <!-- Floating particles (JS-generated) -->
 
+  <!-- Hero Gallery Panels -->
+  <div class="hero-gallery left" id="galleryLeft">
+    <span class="gallery-arrow">‹</span>
+  </div>
+  <div class="hero-gallery right" id="galleryRight">
+    <span class="gallery-arrow">›</span>
+  </div>
+
   <div class="hero-inner">
     <div class="tag">Dự án giáo dục cộng đồng</div>
 
@@ -1027,8 +1112,62 @@
   const prevBtn = document.getElementById('carouselPrev');
   prevBtn.addEventListener('click', () => goTo(current - 1));
 
+  /* ── Hero Gallery ── */
+  const GALLERY_IMAGES = [
+    'https://i.imgur.com/HoU6t5w.png',
+    'https://i.imgur.com/iWTYIGq.jpeg',
+    'https://i.imgur.com/oXjz1Ub.png',
+    'https://i.imgur.com/WrXu3sl.png',
+    'https://i.imgur.com/92QjZaX.jpeg',
+    'https://i.imgur.com/gZyQWbz.jpeg',
+    'https://i.imgur.com/YGDjNjU.jpeg',
+    'https://i.imgur.com/T6negLi.jpeg',
+    'https://i.imgur.com/x9Gkbhx.jpeg',
+  ];
+
+  const galleryLeft  = document.getElementById('galleryLeft');
+  const galleryRight = document.getElementById('galleryRight');
+  const N = GALLERY_IMAGES.length;
+  let gIndex = 0; // index shown on RIGHT panel; LEFT shows gIndex-1
+
+  function createSlide(src) {
+    const img = document.createElement('img');
+    img.className = 'gallery-slide';
+    img.src = src;
+    return img;
+  }
+
+  function renderPanel(panel, src, animClass) {
+    // Remove old slides
+    panel.querySelectorAll('.gallery-slide').forEach(s => s.remove());
+    const img = createSlide(src);
+    img.classList.add('visible');
+    if (animClass) img.classList.add(animClass);
+    panel.appendChild(img);
+  }
+
+  function renderGallery(dir) {
+    // dir: 1 = go forward (click right), -1 = go back (click left)
+    const leftAnim  = dir ===  1 ? 'anim-from-right' : 'anim-from-left';
+    const rightAnim = dir ===  1 ? 'anim-from-right' : 'anim-from-left';
+    const leftIdx  = ((gIndex - 1) + N) % N;
+    const rightIdx = gIndex % N;
+    renderPanel(galleryLeft,  GALLERY_IMAGES[leftIdx],  leftAnim);
+    renderPanel(galleryRight, GALLERY_IMAGES[rightIdx], rightAnim);
+  }
+
+  galleryRight.addEventListener('click', () => {
+    gIndex = (gIndex + 1) % N;
+    renderGallery(1);
+  });
+  galleryLeft.addEventListener('click', () => {
+    gIndex = ((gIndex - 1) + N) % N;
+    renderGallery(-1);
+  });
+
   // Init
-  window.addEventListener('resize', () => goTo(current));
+  renderGallery(0);
+
   // Small delay to let layout settle
   setTimeout(() => goTo(0), 100);
 
