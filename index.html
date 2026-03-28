@@ -186,9 +186,93 @@
     .gallery-slide.anim-from-right { animation: slideFromRight 0.55s ease forwards; }
     .gallery-slide.anim-from-left  { animation: slideFromLeft  0.55s ease forwards; }
 
-    /* Hide on very small screens */
+    /* ─── MOBILE GALLERY STRIP ─── */
+    .mobile-gallery { display: none; }
+
+    /* Tablet: thu nhỏ panel */
+    @media (max-width: 1024px) {
+      .hero-gallery {
+        width: clamp(180px, 20vw, 280px);
+        height: clamp(180px, 20vw, 280px);
+      }
+    }
+
+    /* Mobile: ẩn panel 2 bên, hiện gallery ngang */
     @media (max-width: 768px) {
       .hero-gallery { display: none; }
+
+      .mobile-gallery {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 0 20px 32px;
+        background: linear-gradient(180deg, rgba(8,15,24,0.9) 0%, #080f18 100%);
+        position: relative;
+        z-index: 2;
+      }
+      .mobile-gallery-panel {
+        position: relative;
+        flex: 0 0 calc(50% - 14px);
+        aspect-ratio: 1 / 1;
+        border-radius: 14px;
+        border: 1px solid rgba(240,165,0,0.25);
+        overflow: hidden;
+        cursor: pointer;
+        background: rgba(13,27,42,0.6);
+        transition: border-color 0.3s, box-shadow 0.3s;
+      }
+      .mobile-gallery-panel:hover {
+        border-color: rgba(240,165,0,0.6);
+        box-shadow: 0 0 20px rgba(240,165,0,0.15);
+      }
+      .mobile-gallery-panel::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 50%, rgba(8,15,24,0.65) 100%);
+        pointer-events: none;
+        z-index: 1;
+      }
+      .mobile-gallery-panel img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: opacity 0.5s ease;
+      }
+      .mobile-gallery-arrow {
+        position: absolute;
+        bottom: 10px; left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        font-size: 1.3rem;
+        color: rgba(240,165,0,0.8);
+        pointer-events: none;
+      }
+      .mobile-gallery-dots {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        padding-bottom: 24px;
+        background: #080f18;
+        position: relative; z-index: 2;
+      }
+      .mobile-gallery-dot {
+        width: 6px; height: 6px;
+        border-radius: 3px;
+        background: rgba(240,165,0,0.2);
+        transition: width 0.3s, background 0.3s;
+      }
+      .mobile-gallery-dot.active {
+        width: 22px;
+        background: var(--gold);
+      }
+    }
+
+    /* Small phone */
+    @media (max-width: 400px) {
+      .hero-inner { padding: 32px 16px; }
+      .member-card { flex: 0 0 280px; }
     }
 
     /* Tag line */
@@ -657,8 +741,16 @@
       }
       .member-avatar { margin: 0 auto; }
       .member-info { text-align: center; }
+
+      /* Bảng scroll ngang */
+      .vinh-danh-table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 12px;
+      }
+      .vinh-danh-table { min-width: 520px; }
       .vinh-danh-table th,
-      .vinh-danh-table td { padding: 10px 10px; font-size: 0.8rem; }
+      .vinh-danh-table td { padding: 10px 12px; font-size: 0.8rem; white-space: nowrap; }
     }
   </style>
 </head>
@@ -709,6 +801,19 @@
     <span>Cuộn xuống</span>
   </div>
 </section>
+
+<!-- ─── MOBILE GALLERY (hiển thị thay cho panel 2 bên trên mobile) ─── -->
+<div class="mobile-gallery" id="mobileGallery">
+  <div class="mobile-gallery-panel" id="mobileGalleryLeft">
+    <img id="mobileImgLeft" src="" alt="">
+    <span class="mobile-gallery-arrow">‹</span>
+  </div>
+  <div class="mobile-gallery-panel" id="mobileGalleryRight">
+    <img id="mobileImgRight" src="" alt="">
+    <span class="mobile-gallery-arrow">›</span>
+  </div>
+</div>
+<div class="mobile-gallery-dots" id="mobileGalleryDots"></div>
 
 <!-- ─── MEMBERS CAROUSEL ─── -->
 <section class="members-section">
@@ -1127,8 +1232,24 @@
 
   const galleryLeft  = document.getElementById('galleryLeft');
   const galleryRight = document.getElementById('galleryRight');
+  const mobileImgLeft  = document.getElementById('mobileImgLeft');
+  const mobileImgRight = document.getElementById('mobileImgRight');
+  const mobileDotsWrap = document.getElementById('mobileGalleryDots');
   const N = GALLERY_IMAGES.length;
-  let gIndex = 0; // index shown on RIGHT panel; LEFT shows gIndex-1
+  let gIndex = 0;
+
+  // Build mobile dots
+  GALLERY_IMAGES.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'mobile-gallery-dot' + (i === 0 ? ' active' : '');
+    mobileDotsWrap.appendChild(d);
+  });
+
+  function updateMobileDots() {
+    Array.from(mobileDotsWrap.children).forEach((d, i) =>
+      d.classList.toggle('active', i === gIndex)
+    );
+  }
 
   function createSlide(src) {
     const img = document.createElement('img');
@@ -1138,7 +1259,6 @@
   }
 
   function renderPanel(panel, src, animClass) {
-    // Remove old slides
     panel.querySelectorAll('.gallery-slide').forEach(s => s.remove());
     const img = createSlide(src);
     img.classList.add('visible');
@@ -1147,23 +1267,26 @@
   }
 
   function renderGallery(dir) {
-    // dir: 1 = go forward (click right), -1 = go back (click left)
-    const leftAnim  = dir ===  1 ? 'anim-from-right' : 'anim-from-left';
-    const rightAnim = dir ===  1 ? 'anim-from-right' : 'anim-from-left';
+    const animClass = dir === 1 ? 'anim-from-right' : dir === -1 ? 'anim-from-left' : '';
     const leftIdx  = ((gIndex - 1) + N) % N;
     const rightIdx = gIndex % N;
-    renderPanel(galleryLeft,  GALLERY_IMAGES[leftIdx],  leftAnim);
-    renderPanel(galleryRight, GALLERY_IMAGES[rightIdx], rightAnim);
+
+    // Desktop panels
+    renderPanel(galleryLeft,  GALLERY_IMAGES[leftIdx],  animClass);
+    renderPanel(galleryRight, GALLERY_IMAGES[rightIdx], animClass);
+
+    // Mobile panels
+    mobileImgLeft.src  = GALLERY_IMAGES[leftIdx];
+    mobileImgRight.src = GALLERY_IMAGES[rightIdx];
+
+    updateMobileDots();
   }
 
-  galleryRight.addEventListener('click', () => {
-    gIndex = (gIndex + 1) % N;
-    renderGallery(1);
-  });
-  galleryLeft.addEventListener('click', () => {
-    gIndex = ((gIndex - 1) + N) % N;
-    renderGallery(-1);
-  });
+  galleryRight.addEventListener('click', () => { gIndex = (gIndex + 1) % N; renderGallery(1); });
+  galleryLeft.addEventListener('click',  () => { gIndex = ((gIndex - 1) + N) % N; renderGallery(-1); });
+
+  document.getElementById('mobileGalleryRight').addEventListener('click', () => { gIndex = (gIndex + 1) % N; renderGallery(1); });
+  document.getElementById('mobileGalleryLeft').addEventListener('click',  () => { gIndex = ((gIndex - 1) + N) % N; renderGallery(-1); });
 
   // Init
   renderGallery(0);
