@@ -764,6 +764,250 @@
       .vinh-danh-table th,
       .vinh-danh-table td { padding: 10px 12px; font-size: 0.8rem; white-space: nowrap; }
     }
+
+    /* ─── TOP 5 và TOP 6-10 ROW COLORS ─── */
+    .vinh-danh-table .row-top5 {
+      background: linear-gradient(90deg, rgba(240,165,0,0.18), rgba(240,165,0,0.06)) !important;
+    }
+    .vinh-danh-table .row-top5 td:nth-child(2) { color: var(--gold-light) !important; }
+    .vinh-danh-table .row-top5 td:nth-child(1) {
+      font-weight: 700;
+      color: var(--gold) !important;
+    }
+    .vinh-danh-table .row-top610 {
+      background: linear-gradient(90deg, rgba(100,180,255,0.12), rgba(100,180,255,0.03)) !important;
+    }
+    .vinh-danh-table .row-top610 td:nth-child(2) { color: #b8dcff !important; }
+    .vinh-danh-table .row-top610 td:nth-child(1) {
+      font-weight: 700;
+      color: #80c4ff !important;
+    }
+
+    /* ─── VINH DANH CÁ NHÂN (carousel giống A5forever) ─── */
+    .personal-gallery-section {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 60px 0 48px;
+      overflow: visible;
+      touch-action: pan-y;
+      gap: 24px;
+    }
+    #personalTrack {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 24px;
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 60px;
+    }
+    .personal-gallery-section .gallery-item {
+      border-radius: 0 !important;
+      border: none !important;
+      overflow: visible !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      flex-shrink: 0;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.55s cubic-bezier(0.4,0,0.2,1);
+    }
+    .personal-gallery-section .gallery-item.side {
+      width: clamp(120px, 15vw, 190px);
+      height: auto !important;
+      opacity: 0.52;
+      transform: scale(0.82);
+      transform-origin: bottom center;
+    }
+    .personal-gallery-section .gallery-item.center {
+      width: clamp(260px, 32vw, 390px);
+      height: auto !important;
+      opacity: 1;
+      transform: scale(1);
+      transform-origin: bottom center;
+      z-index: 2;
+    }
+    .personal-gallery-section .gallery-item.side::after { display: none !important; }
+    .personal-award-card {
+      width: 100%;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .card-photo {
+      width: 86%;
+      aspect-ratio: 3 / 4;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1.5px solid rgba(240,165,0,0.45);
+      box-shadow: 0 0 24px rgba(240,165,0,0.14), 0 18px 48px rgba(0,0,0,0.6);
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+    .card-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    .card-photo::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 28%;
+      background: linear-gradient(to top, rgba(13,27,42,0.85), transparent);
+      pointer-events: none;
+    }
+    .card-info-wrap {
+      width: 100%;
+      position: relative;
+      margin-top: -20px;
+      z-index: 3;
+      background: linear-gradient(160deg, rgba(13,27,42,0.96) 0%, rgba(19,35,54,0.96) 100%);
+      border-radius: 16px;
+      border: 1px solid rgba(240,165,0,0.28);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 16px 18px;
+      gap: 6px;
+    }
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+      font-weight: 700;
+      color: var(--cream);
+      text-align: center;
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+      position: static;
+      transform: none;
+      background: none;
+      -webkit-text-fill-color: var(--cream);
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+      white-space: normal;
+    }
+    .card-name-divider {
+      width: 36px;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .card-achievements {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .card-achievements .ach-label {
+      font-size: 0.64rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--gold-light);
+      text-transform: uppercase;
+      opacity: 0.75;
+      text-align: center;
+    }
+    .card-achievements .ach-text {
+      font-size: clamp(0.75rem, 1.4vw, 0.88rem);
+      line-height: 1.7;
+      font-weight: 300;
+      color: rgba(245,237,217,0.85);
+      text-align: center;
+    }
+    .gallery-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(240,165,0,0.35);
+      background: rgba(13,27,42,0.85);
+      backdrop-filter: blur(8px);
+      color: var(--gold-light);
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 10;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .gallery-nav:hover {
+      background: rgba(240,165,0,0.15);
+      border-color: var(--gold);
+    }
+    .gallery-nav.prev { left: 12px; }
+    .gallery-nav.next { right: 12px; }
+    .gallery-dots {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 20px;
+    }
+    .gallery-dot {
+      width: 6px; height: 6px;
+      border-radius: 3px;
+      background: rgba(240,165,0,0.2);
+      cursor: pointer;
+      transition: width 0.35s, background 0.35s;
+    }
+    .gallery-dot.active {
+      width: 26px;
+      background: var(--gold);
+    }
+    .vinhdanh-personal-section {
+      position: relative;
+      z-index: 2;
+      padding: 80px 40px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .vinhdanh-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(240,165,0,0.08);
+      border: 1px solid rgba(240,165,0,0.25);
+      border-radius: 100px;
+      padding: 5px 18px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 28px;
+    }
+    .vinhdanh-label::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 6px var(--gold);
+      animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    @media (max-width: 768px) {
+      .personal-gallery-section .gallery-item.side { display: none; }
+      .personal-gallery-section .gallery-item.center { width: clamp(220px, 72vw, 340px); }
+      #personalTrack { padding: 0 16px; }
+    }
+    @media (max-width: 480px) {
+      .personal-gallery-section .gallery-item.center { width: 82vw; }
+    }
   </style>
 </head>
 <body>
@@ -827,104 +1071,21 @@
 </div>
 <div class="mobile-gallery-dots" id="mobileGalleryDots"></div>
 
-<!-- ─── MEMBERS CAROUSEL ─── -->
-<section class="members-section">
-  <div class="section-label">
-    <h2>Thành Viên <span>Tiêu Biểu</span></h2>
-    <p>Những học viên đã và đang viết nên câu chuyện của mình</p>
-  </div>
-
-  <div class="carousel-wrap">
-    <div class="carousel-track" id="carouselTrack">
-      <div class="member-card">
-        <div class="member-avatar">
-           <img src="https://i.imgur.com/sayRUfV.png">
-          <div class="member-badge">✨</div>
-        </div>
-        <div class="member-info">
-          <div class="member-name">Phạm Duy Minh</div>
-          <div class="member-role">Bố của yeuhoc</div>
-          <p class="member-quote"></p>
-        </div>
-      </div>
-
-      <div class="member-card">
-        <div class="member-avatar">
-          <img src="https://i.imgur.com/jSmRzSD.jpeg">
-          <div class="member-badge">⭐</div>
-        </div>
-        <div class="member-info">
-          <div class="member-name">Nguyễn Nhật Duy</div>
-          <div class="member-role">Bố của duy minh</div>
-          <p class="member-quote"></p>
-        </div>
-      </div>
-
-      <div class="member-card">
-        <div class="member-avatar">
-          <img src="https://i.imgur.com/RwInQNF.png">
-          <div class="member-badge">🏆</div>
-        </div>
-        <div class="member-info">
-          <div class="member-name">Trần Hoàng Hải Nam</div>
-          <div class="member-role">Nhị Lang Thần</div>
-          <p class="member-quote"></p>
-        </div>
-      </div>
-
-      <div class="member-card">
-        <div class="member-avatar">
-          <img src="https://i.imgur.com/ZB3kQn8.png">
-          <div class="member-badge">🏆</div>
-        </div>
-        <div class="member-info">
-          <div class="member-name">Trần Hải Minh</div>
-          <div class="member-role">Khổng Minh Minh</div>
-          <p class="member-quote"></p>
-        </div>
-      </div>
-
-      <div class="member-card">
-        <div class="member-avatar">
-          <img src="https://i.imgur.com/K4O2dTs.png">
-          <div class="member-badge">✨</div>
-        </div>
-        <div class="member-info">
-          <div class="member-name">Đặng Hiếu Nguyên</div>
-          <div class="member-role">Bố của Nhật Duy</div>
-          <p class="member-quote"></p>
-        </div>
-      </div>
-
-      <div class="member-card">
-        <div class="member-avatar">
-          <img src="https://i.imgur.com/l9EsO1s.jpeg">
-          <div class="member-badge">✨</div>
-        </div>
-        <div class="member-info">
-          <div class="member-name">Nguyễn Quang Anh</div>
-          <div class="member-role">Bố của Hiếu Nguyên</div>
-          <p class="member-quote"></p>
-        </div>
-      </div>
 
 
-      
+<!-- ─── VINH DANH CÁ NHÂN ─── -->
+<section id="vinhdanhcanhan">
+  <div class="vinhdanh-personal-section">
+    <div class="vinhdanh-label">Vinh danh Cá nhân</div>
 
-      
-
-    
-
+    <div class="personal-gallery-section">
+      <button class="gallery-nav prev" id="personalPrev">‹</button>
+      <div id="personalTrack"></div>
+      <button class="gallery-nav next" id="personalNext">›</button>
     </div>
 
-    <!-- Left nav button -->
-    <button class="carousel-nav prev" id="carouselPrev" aria-label="Trước">‹</button>
-
-    <!-- Right nav button -->
-    <button class="carousel-nav" id="carouselNext" aria-label="Tiếp theo">›</button>
+    <div class="gallery-dots" id="personalDots"></div>
   </div>
-
-  <div class="carousel-progress" id="carouselDots"></div>
 </section>
 
 <!-- ─── BẢNG VINH DANH ─── -->
@@ -949,7 +1110,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="row-top">
+          <tr class="row-top5">
             <td>1</td>
             <td>Đặng Hiếu Nguyên</td>
             <td><span class="empty-cell">—</span></td>
@@ -958,7 +1119,7 @@
             <td><span class="score-badge score-ielts">8.5</span></td>
             <td><span class="score-badge score-hsk">9</span></td>
           </tr>
-          <tr class="row-top">
+          <tr class="row-top5">
             <td>2</td>
             <td>Trần Hải Minh</td>
             <td><span class="score-badge">120</span></td>
@@ -967,7 +1128,7 @@
             <td><span class="score-badge score-ielts">7.0</span></td>
             <td><span class="empty-cell">—</span></td>
           </tr>
-          <tr class="row-top">
+          <tr class="row-top5">
             <td>3</td>
             <td>Phạm Duy Minh</td>
             <td><span class="empty-cell">—</span></td>
@@ -976,7 +1137,7 @@
             <td><span class="score-badge score-ielts">7.5</span></td>
             <td><span class="empty-cell">—</span></td>
           </tr>
-          <tr class="row-top">
+          <tr class="row-top5">
             <td>4</td>
             <td>Nguyễn Nhật Duy</td>
             <td><span class="score-badge">113</span></td>
@@ -985,7 +1146,7 @@
             <td><span class="empty-cell">—</span></td>
             <td><span class="empty-cell">—</span></td>
           </tr>
-          <tr class="row-top">
+          <tr class="row-top5">
             <td>5</td>
             <td>Trần Hoàng Hải Nam</td>
             <td><span class="score-badge">112</span></td>
@@ -994,8 +1155,17 @@
             <td><span class="score-badge score-ielts">7.5</span></td>
             <td><span class="empty-cell">—</span></td>
           </tr>
-          <tr class="row-top">
+          <tr class="row-top610">
             <td>6</td>
+            <td>Nguyễn Lê Hà Linh</td>
+            <td><span class="score-badge">109</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="empty-cell">—</span></td>
+            <td><span class="score-badge score-ielts">6.5</span></td>
+            <td><span class="empty-cell">—</span></td>
+          </tr>
+          <tr class="row-top610">
+            <td>7</td>
             <td>Đỗ Minh Hưng</td>
             <td><span class="empty-cell">—</span></td>
             <td><span class="empty-cell">—</span></td>
@@ -1003,8 +1173,8 @@
             <td><span class="score-badge score-ielts">7.5</span></td>
             <td><span class="empty-cell">—</span></td>
           </tr>
-          <tr>
-            <td>7</td>
+          <tr class="row-top610">
+            <td>8</td>
             <td>Nguyễn Hưng Thịnh</td>
             <td><span class="score-badge">106</span></td>
             <td><span class="score-badge score-tsa">66.xx</span></td>
@@ -1012,8 +1182,8 @@
             <td><span class="score-badge score-ielts">7.0</span></td>
             <td><span class="empty-cell">—</span></td>
           </tr>
-          <tr>
-            <td>8</td>
+          <tr class="row-top610">
+            <td>9</td>
             <td>Quách Thanh Hải</td>
             <td><span class="score-badge">99</span></td>
             <td><span class="score-badge score-tsa">58.xx</span></td>
@@ -1021,8 +1191,8 @@
             <td><span class="score-badge score-ielts">7.0</span></td>
             <td><span class="empty-cell">—</span></td>
           </tr>
-          <tr>
-            <td>8</td>
+          <tr class="row-top610">
+            <td>10</td>
             <td>Nguyễn Quang Anh</td>
             <td><span class="score-badge">95</span></td>
             <td><span class="score-badge score-tsa">61.xx</span></td>
@@ -1031,7 +1201,7 @@
             <td><span class="empty-cell">—</span></td>
           </tr>
           <tr>
-            <td>9</td>
+            <td>11</td>
             <td>Trương Đức Phan Anh</td>
             <td><span class="score-badge">95</span></td>
             <td><span class="empty-cell">—</span></td>
@@ -1040,7 +1210,7 @@
             <td><span class="empty-cell">—</span></td>
           </tr>
           <tr>
-            <td>10</td>
+            <td>12</td>
             <td>Nguyễn Đức Huy</td>
             <td><span class="score-badge">95</span></td>
             <td><span class="empty-cell">—</span></td>
@@ -1049,7 +1219,7 @@
             <td><span class="empty-cell">—</span></td>
           </tr>
           <tr>
-            <td>11</td>
+            <td>13</td>
             <td>Nguyễn Ngọc Thạch</td>
             <td><span class="score-badge">94</span></td>
             <td><span class="empty-cell">—</span></td>
@@ -1058,7 +1228,7 @@
             <td><span class="empty-cell">—</span></td>
           </tr>
           <tr>
-            <td>12</td>
+            <td>14</td>
             <td>Phạm Gia Bảo</td>
             <td><span class="score-badge">93</span></td>
             <td><span class="empty-cell">—</span></td>
@@ -1067,7 +1237,7 @@
             <td><span class="empty-cell">—</span></td>
           </tr>
           <tr>
-            <td>13</td>
+            <td>15</td>
             <td>Nguyễn Hoàng Quân</td>
             <td><span class="score-badge">89</span></td>
             <td><span class="empty-cell">—</span></td>
@@ -1076,7 +1246,7 @@
             <td><span class="empty-cell">—</span></td>
           </tr>
           <tr>
-            <td>14</td>
+            <td>16</td>
             <td>Nguyễn Hoàng Nam</td>
             <td><span class="score-badge">89</span></td>
             <td><span class="empty-cell">—</span></td>
@@ -1085,7 +1255,7 @@
             <td><span class="empty-cell">—</span></td>
           </tr>
           <tr>
-            <td>15</td>
+            <td>17</td>
             <td>Nguyễn Trọng Đức</td>
             <td><span class="score-badge">87</span></td>
             <td><span class="empty-cell">—</span></td>
@@ -1094,7 +1264,7 @@
             <td><span class="empty-cell">—</span></td>
           </tr>
           <tr>
-            <td>16</td>
+            <td>18</td>
             <td>Hoàng Văn Phú</td>
             <td><span class="score-badge">85</span></td>
             <td><span class="empty-cell">—</span></td>
@@ -1103,7 +1273,7 @@
             <td><span class="empty-cell">—</span></td>
           </tr>
           <tr>
-            <td>17</td>
+            <td>19</td>
             <td>Trần Hoàng Dương</td>
             <td><span class="score-badge">83</span></td>
             <td><span class="score-badge score-tsa">57.xx</span></td>
@@ -1112,7 +1282,7 @@
             <td><span class="empty-cell">—</span></td>
           </tr>
           <tr>
-            <td>18</td>
+            <td>20</td>
             <td>Phan Ngọc Khánh</td>
             <td><span class="score-badge">83</span></td>
             <td><span class="score-badge score-tsa">57.xx</span></td>
@@ -1195,71 +1365,6 @@
   for (let i = 0; i < 18; i++) spawnParticle();
   setInterval(spawnParticle, 1200);
 
-  /* ── Carousel ── */
-  const track    = document.getElementById('carouselTrack');
-  const nextBtn  = document.getElementById('carouselNext');
-  const dotsWrap = document.getElementById('carouselDots');
-  const cards    = Array.from(track.querySelectorAll('.member-card'));
-  const TOTAL    = cards.length;
-  let current    = 0;
-  let autoTimer;
-
-  // Build dots
-  cards.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'progress-dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', () => goTo(i));
-    dotsWrap.appendChild(d);
-  });
-
-  function getCardWidth() {
-    const card = cards[0];
-    const gap = 28;
-    return card.getBoundingClientRect().width + gap;
-  }
-
-  function getOffset(index) {
-    // Center the active card
-    const cardW  = getCardWidth();
-    const center = window.innerWidth / 2;
-    const cardCenter = cards[index].getBoundingClientRect().width / 2;
-    let offset = 0;
-    for (let i = 0; i < index; i++) offset += getCardWidth();
-    return -(offset - center + cardCenter + cards[index].getBoundingClientRect().width / 2 - 14);
-  }
-
-  function goTo(index) {
-    current = (index + TOTAL) % TOTAL;
-
-    // Recalculate pixel offset
-    const cardW = getCardWidth();
-    const viewCenter = window.innerWidth / 2;
-    const firstCardLeft = parseFloat(getComputedStyle(track).paddingLeft) || 0;
-    // Simple centering: shift so card[current] is in center
-    const rawOffset = firstCardLeft + current * cardW - viewCenter + cards[0].getBoundingClientRect().width / 2;
-    track.style.transform = `translateX(${-rawOffset}px)`;
-
-    // Update active card
-    cards.forEach((c, i) => c.classList.toggle('active', i === current));
-
-    // Update dots
-    Array.from(dotsWrap.children).forEach((d, i) => d.classList.toggle('active', i === current));
-
-    resetTimer();
-  }
-
-  function goNext() { goTo(current + 1); }
-
-  function resetTimer() {
-    clearInterval(autoTimer);
-    autoTimer = setInterval(goNext, 5000);
-  }
-
-  nextBtn.addEventListener('click', goNext);
-
-  const prevBtn = document.getElementById('carouselPrev');
-  prevBtn.addEventListener('click', () => goTo(current - 1));
-
   /* ── Hero Gallery ── */
   const GALLERY_IMAGES = [
     'https://i.imgur.com/HoU6t5w.png',
@@ -1336,6 +1441,112 @@
 
   // Small delay to let layout settle
   setTimeout(() => goTo(0), 100);
+
+  /* ── VINH DANH CÁ NHÂN carousel (giống A5forever) ── */
+  const PERSONAL_HONORS = [
+    {
+      name: "Trần Hải Minh",
+      avatar: "images/haiminhvd.png",
+      achievement: "120 HSA<br>IELTS 7.0<br>Trợ giảng Yêu Học<br>Trợ giảng HCTK"
+    },
+    {
+      name: "Đặng Hiếu Nguyên",
+      avatar: "images/hieunguyenvinhdanh.png",
+      achievement: "HSK 6<br>IELTS 7.0<br>Cổ đông Yêu Học"
+    },
+    {
+      name: "Nguyễn Nhật Duy",
+      avatar: "images/nhatduyvinhdanh.png",
+      achievement: "Giải Nhất HSG Toán TP Hà Nội<br>Trợ giảng ÁiTDM<br>Trợ giảng Yêu Học"
+    },
+    {
+      name: "Phạm Duy Minh",
+      avatar: "images/duyminhvinhdanh.png",
+      achievement: "1590 SAT<br>IELTS 7.5<br>Giám đốc Yêu Học"
+    },
+    {
+      name: "Trần Hoàng Hải Nam",
+      avatar: "images/hainamvinhdanh.png",
+      achievement: "112 HSA<br>IELTS 7.5<br>Trợ Giảng Yêu Học<br>Trợ giảng HCTK"
+    },
+    {
+      name: "Nguyễn Quang Anh",
+      avatar: "images/quanganhvinhdanh.png",
+      achievement: "Bố của các thành viên trên"
+    }
+  ];
+
+  const pTrack    = document.getElementById('personalTrack');
+  const pDotsWrap = document.getElementById('personalDots');
+  const pPrevBtn  = document.getElementById('personalPrev');
+  const pNextBtn  = document.getElementById('personalNext');
+  const PN = PERSONAL_HONORS.length;
+  let pCurrent = 0;
+  let pAutoTimer;
+  const P_INTERVAL = 5000;
+
+  PERSONAL_HONORS.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => pGoTo(i));
+    pDotsWrap.appendChild(d);
+  });
+
+  function pRender() {
+    pTrack.innerHTML = '';
+    const indices = [((pCurrent - 1 + PN) % PN), pCurrent, ((pCurrent + 1) % PN)];
+    const classes = ['side', 'center', 'side'];
+    indices.forEach((idx, pos) => {
+      const honor = PERSONAL_HONORS[idx];
+      const item = document.createElement('div');
+      item.className = 'gallery-item ' + classes[pos];
+      item.innerHTML = `
+        <div class="personal-award-card">
+          <div class="card-photo">
+            <img src="${honor.avatar}" alt="${honor.name}" onerror="this.src='https://i.pravatar.cc/300?img=${idx+30}'" />
+          </div>
+          <div class="card-info-wrap">
+            <div class="card-name">${honor.name}</div>
+            <div class="card-name-divider"></div>
+            <div class="card-achievements">
+              <div class="ach-label">Thành Tích</div>
+              <div class="ach-text">${honor.achievement}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      if (pos !== 1) item.addEventListener('click', () => pGoTo(idx));
+      pTrack.appendChild(item);
+    });
+    Array.from(pDotsWrap.children).forEach((d, i) =>
+      d.classList.toggle('active', i === pCurrent)
+    );
+  }
+
+  function pGoTo(idx) {
+    pCurrent = ((idx % PN) + PN) % PN;
+    pRender();
+    pResetTimer();
+  }
+
+  function pResetTimer() {
+    clearInterval(pAutoTimer);
+    pAutoTimer = setInterval(() => pGoTo(pCurrent + 1), P_INTERVAL);
+  }
+
+  pPrevBtn.addEventListener('click', () => pGoTo(pCurrent - 1));
+  pNextBtn.addEventListener('click', () => pGoTo(pCurrent + 1));
+
+  let pTouchStartX = 0;
+  const pGs = document.querySelector('.personal-gallery-section');
+  pGs.addEventListener('touchstart', e => { pTouchStartX = e.touches[0].clientX; }, { passive: true });
+  pGs.addEventListener('touchend', e => {
+    const diff = pTouchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) pGoTo(diff > 0 ? pCurrent + 1 : pCurrent - 1);
+  });
+
+  pRender();
+  pResetTimer();
 
 </script>
 </body>
